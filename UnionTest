@@ -1,0 +1,66 @@
+#include <stdio.h> 
+
+void printBinary(int n, int i)
+{
+
+    // Prints the binary representation 
+    // of a number n up to i-bits. 
+    int k;
+    for (k = i - 1; k >= 0; k--) {
+
+        if ((n >> k) & 1)
+            printf("1");
+        else
+            printf("0");
+    }
+}
+
+typedef union {
+
+    double d;
+    struct
+    {
+
+        // Order is important. 
+        // Here the members of the union data structure 
+        // use the same memory (32 bits). 
+        // The ordering is taken 
+        // from the LSB to the MSB. 
+        unsigned long long int mantissa : 52;
+        unsigned long long int exponent : 11;
+        unsigned long long int sign : 1;
+
+    } raw;
+} mydouble;
+
+// Function to convert real value 
+// to IEEE foating point representation 
+void printIEEE(mydouble var)
+{
+
+    // Prints the IEEE 754 representation 
+    // of a float value (32 bits) 
+
+    printBinary(var.raw.sign, 1);
+    printf(" | ");
+    printBinary(var.raw.exponent, 11);
+    printf(" | ");
+    printBinary(var.raw.mantissa, 52);
+    printf("\n");
+}
+
+// Driver Code 
+int main()
+{
+
+    // Instantiate the union 
+    mydouble var;
+
+    // Get the real value 
+    var.d = 85,125;
+
+    // Get the IEEE floating point representation 
+    printIEEE(var);
+
+    return 0;
+}
